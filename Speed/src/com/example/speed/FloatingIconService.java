@@ -23,9 +23,6 @@ public class FloatingIconService extends Service implements LocationListener {
 	private WindowManager windowManager;
 	private TextView floatingSpeedText;
 
-	private static int x = 0;
-	private static int y = 0;
-
 	public LocationManager locationManager = null;
 
 	@Override
@@ -46,14 +43,9 @@ public class FloatingIconService extends Service implements LocationListener {
 				PixelFormat.TRANSLUCENT);
 
 		params.gravity = Gravity.TOP | Gravity.LEFT;
-
-		if (FloatingIconService.x != 0 || FloatingIconService.y != 0) {
-			params.x = x;
-			params.y = y;
-		} else {
-			params.x = 0;
-			params.y = 200;
-		}
+		params.x = 0;
+		params.y = 200;
+		
 		floatingSpeedText = new TextView(this);
 		floatingSpeedText.setText(Html
 				.fromHtml("<font color='#0000FF'>0</font>"));
@@ -87,8 +79,6 @@ public class FloatingIconService extends Service implements LocationListener {
 								+ (int) (event.getRawX() - initialTouchX);
 						paramsF.y = initialY
 								+ (int) (event.getRawY() - initialTouchY);
-						FloatingIconService.x = paramsF.x;
-						FloatingIconService.y = paramsF.y;
 						windowManager.updateViewLayout(floatingSpeedText,
 								paramsF);
 						return true;
