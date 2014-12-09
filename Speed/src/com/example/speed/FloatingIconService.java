@@ -1,5 +1,6 @@
 package com.example.speed;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -7,21 +8,28 @@ import android.graphics.PixelFormat;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class FloatingIconService extends Service implements LocationListener {
 	private static final String TAG = "FloatingIconService";
-	private WindowManager windowManager;
-	private TextView floatingSpeedText;
+	private WindowManager windowManager = null;
+	private TextView floatingSpeedText = null;
+	private MediaPlayer player = null;
+	private int speedLimit = 25;
 
 	public LocationManager locationManager = null;
 
@@ -30,6 +38,7 @@ public class FloatingIconService extends Service implements LocationListener {
 		return null;
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -45,7 +54,7 @@ public class FloatingIconService extends Service implements LocationListener {
 		params.gravity = Gravity.TOP | Gravity.LEFT;
 		params.x = 0;
 		params.y = 200;
-		
+
 		floatingSpeedText = new TextView(this);
 		floatingSpeedText.setText(Html
 				.fromHtml("<font color='#0000FF'>0</font>"));
@@ -54,6 +63,37 @@ public class FloatingIconService extends Service implements LocationListener {
 		windowManager.addView(floatingSpeedText, params);
 
 		try {
+			floatingSpeedText
+					.setOnLongClickListener(new View.OnLongClickListener() {
+
+						@Override
+						public boolean onLongClick(View v) {
+							PopupMenu popup = new PopupMenu(v.getContext(), v);
+							MenuInflater inflater = popup.getMenuInflater();
+							inflater.inflate(R.menu.popup_menu, popup.getMenu());
+							popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+								@Override
+								public boolean onMenuItemClick(MenuItem item) {
+									switch (item.getItemId()) {
+									case R.id.close_btn_item:
+										stopService(new Intent(
+												getApplicationContext(),
+												FloatingIconService.class));
+										break;
+
+									default:
+										break;
+									}
+									return false;
+								}
+							});
+							popup.show();
+
+							return true;
+						}
+					});
+
 			floatingSpeedText.setOnTouchListener(new View.OnTouchListener() {
 				private WindowManager.LayoutParams paramsF = params;
 				private int initialX;
@@ -71,9 +111,8 @@ public class FloatingIconService extends Service implements LocationListener {
 						initialY = paramsF.y;
 						initialTouchX = event.getRawX();
 						initialTouchY = event.getRawY();
-						return true;
 					case MotionEvent.ACTION_UP:
-						return true;
+						break;
 					case MotionEvent.ACTION_MOVE:
 						paramsF.x = initialX
 								+ (int) (event.getRawX() - initialTouchX);
@@ -81,7 +120,6 @@ public class FloatingIconService extends Service implements LocationListener {
 								+ (int) (event.getRawY() - initialTouchY);
 						windowManager.updateViewLayout(floatingSpeedText,
 								paramsF);
-						return true;
 					}
 					return false;
 				}
@@ -89,6 +127,8 @@ public class FloatingIconService extends Service implements LocationListener {
 		} catch (Exception e) {
 			Log.e(TAG, "exceptioin in setting up floating image", e);
 		}
+		this.player = MediaPlayer.create(this, R.raw.alert);
+		this.player.setVolume(1.0f, 1.0f);
 	}
 
 	@Override
@@ -108,6 +148,9 @@ public class FloatingIconService extends Service implements LocationListener {
 		if (locationManager != null)
 			locationManager.removeUpdates(this);
 		locationManager = null;
+		if (player != null)
+			player.release();
+		player = null;
 		super.onDestroy();
 	}
 
@@ -120,6 +163,23 @@ public class FloatingIconService extends Service implements LocationListener {
 					.fromHtml("<font color='#0000FF'>"
 							+ String.valueOf(speedInMiles) + "</font>"));
 		}
+
+		int limit = -1;
+		try {
+			limit = Integer.parseInt(MainActivity.text.getText().toString());
+		} catch (Exception e) {
+			Log.e(TAG, "wrong speed format");
+		}
+		if (limit > 0) {
+			this.speedLimit = limit;
+			Toast.makeText(getApplicationContext(),
+					MainActivity.text.getText().toString(), Toast.LENGTH_LONG)
+					.show();
+		}
+		if (speedInMiles > this.speedLimit) {
+			player.start();
+		}
+
 	}
 
 	@Override

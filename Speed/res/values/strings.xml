@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="map_speed_text">Start Map and Speed</string>
     <string name="speed_only_text">Only Speed</string>
+    <string name="speed_limit">Config Speed Limit</string>
+    <string name="default_limit">speed limit</string>
 
 </resources>

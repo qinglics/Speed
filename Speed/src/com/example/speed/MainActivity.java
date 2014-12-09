@@ -12,13 +12,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
+
+	public static EditText text = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		text = (EditText) findViewById(R.id.speed_input);
+		text.setText("25");
 
 		Button speedOnlyButton = (Button) findViewById(R.id.speedOnlyButton);
 		speedOnlyButton.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +62,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onDestroy() {
-		stopService(new Intent(MainActivity.this, FloatingIconService.class));
 		super.onDestroy();
 	}
 }
