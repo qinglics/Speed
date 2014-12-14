@@ -11,8 +11,10 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class MainActivity extends Activity {
 
@@ -25,6 +27,8 @@ public class MainActivity extends Activity {
 
 		text = (EditText) findViewById(R.id.speed_input);
 		text.setText("25");
+
+		initLimitSpinner();
 
 		Button speedOnlyButton = (Button) findViewById(R.id.speedOnlyButton);
 		speedOnlyButton.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +62,16 @@ public class MainActivity extends Activity {
 						FloatingIconService.class));
 			}
 		});
+	}
+
+	private void initLimitSpinner() {
+		Spinner limitSpinner = (Spinner) findViewById(R.id.limitSpinner);
+		String[] limits = new String[] { "35", "55", "77" };
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				R.layout.spinner_item_layout, limits);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		limitSpinner.setAdapter(adapter);
+		limitSpinner.setSelection(limits.length - 1);
 	}
 
 	@Override
