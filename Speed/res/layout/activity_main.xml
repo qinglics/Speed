@@ -17,26 +17,17 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
-        <Spinner
-            android:id="@+id/limitSpinner"
-            android:layout_width="188dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
         <TextView
             android:id="@+id/speedLimitTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/speed_limit" />
 
-        <EditText
-            android:id="@+id/speed_input"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:inputType="phone"
-            android:maxLength="2" />
+        <Spinner
+            android:id="@+id/limitSpinner"
+            android:layout_width="188dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <Button
             android:id="@+id/speedOnlyButton"

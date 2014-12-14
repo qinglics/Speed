@@ -167,7 +167,6 @@ public class FloatingIconService extends Service implements LocationListener {
 		int limit = -1;
 		try {
 			limit = Integer.parseInt(MainActivity.limitSpinner.getSelectedItem().toString());
-			Log.e("limit", String.valueOf(limit));
 		} catch (Exception e) {
 			Log.e(TAG, "wrong speed format");
 		}
