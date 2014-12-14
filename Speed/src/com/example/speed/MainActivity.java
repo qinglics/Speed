@@ -29,17 +29,11 @@ public class MainActivity extends Activity {
 		text.setText("25");
 
 		initLimitSpinner();
+		initSpeedOnlyButton();
+		initMapAndSpeedButton();
+	}
 
-		Button speedOnlyButton = (Button) findViewById(R.id.speedOnlyButton);
-		speedOnlyButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startService(new Intent(MainActivity.this,
-						FloatingIconService.class));
-			}
-		});
-
+	private void initMapAndSpeedButton() {
 		Button mapAndSpeedButton = (Button) findViewById(R.id.mapAndSpeedButton);
 		mapAndSpeedButton.setOnClickListener(new View.OnClickListener() {
 
@@ -58,6 +52,18 @@ public class MainActivity extends Activity {
 						currentLocation);
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 				startActivity(intent);
+				startService(new Intent(MainActivity.this,
+						FloatingIconService.class));
+			}
+		});
+	}
+
+	private void initSpeedOnlyButton() {
+		Button speedOnlyButton = (Button) findViewById(R.id.speedOnlyButton);
+		speedOnlyButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
 				startService(new Intent(MainActivity.this,
 						FloatingIconService.class));
 			}
