@@ -13,20 +13,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 public class MainActivity extends Activity {
 
-	public static EditText text = null;
-
+	public static Spinner limitSpinner = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		text = (EditText) findViewById(R.id.speed_input);
-		text.setText("25");
 
 		initLimitSpinner();
 		initSpeedOnlyButton();
@@ -71,7 +67,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void initLimitSpinner() {
-		Spinner limitSpinner = (Spinner) findViewById(R.id.limitSpinner);
+		limitSpinner = (Spinner) findViewById(R.id.limitSpinner);
 		String[] limits = new String[] { "35", "55", "77" };
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.spinner_item_layout, limits);
