@@ -173,7 +173,7 @@ public class FloatingIconService extends Service implements LocationListener {
 		if (limit > 0) {
 			this.speedLimit = limit;
 		}
-		if (speedInMiles > this.speedLimit) {
+		if (speedInMiles > this.speedLimit && !player.isPlaying()) {
 			player.start();
 			Toast.makeText(getApplicationContext(),
 					String.valueOf(speedInMiles), Toast.LENGTH_SHORT)
