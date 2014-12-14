@@ -1672,6 +1672,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0a0007;
         public static final int progress_horizontal=0x7f0a0008;
         public static final int radio=0x7f0a002d;
+        public static final int save_location_item=0x7f0a0047;
         public static final int search_badge=0x7f0a0037;
         public static final int search_bar=0x7f0a0036;
         public static final int search_button=0x7f0a0038;
@@ -1819,6 +1820,8 @@ containing a value of this type.
         public static final int map_speed_text=0x7f0b0012;
         public static final int speed_limit=0x7f0b0014;
         public static final int speed_only_text=0x7f0b0013;
+        public static final int stop_app=0x7f0b0016;
+        public static final int stop_app_and_save_location=0x7f0b0017;
     }
     public static final class style {
         /** 
