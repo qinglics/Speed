@@ -1,5 +1,6 @@
 package com.example.speed;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class FloatingIconService extends Service implements LocationListener {
 	private static final String TAG = "FloatingIconService";
 	private WindowManager windowManager = null;
@@ -43,6 +45,85 @@ public class FloatingIconService extends Service implements LocationListener {
 	public void onCreate() {
 		super.onCreate();
 
+		final WindowManager.LayoutParams params = setUpFloatingText();
+
+		try {
+			setLongClickListener();
+			setTouchListener(params);
+		} catch (Exception e) {
+			Log.e(TAG, "exceptioin in setting up floating image", e);
+		}
+		this.player = MediaPlayer.create(this, R.raw.alert);
+		this.player.setVolume(1.0f, 1.0f);
+	}
+
+	private void setTouchListener(final WindowManager.LayoutParams params) {
+		floatingSpeedText.setOnTouchListener(new View.OnTouchListener() {
+			private WindowManager.LayoutParams paramsF = params;
+			private int initialX;
+			private int initialY;
+			private float initialTouchX;
+			private float initialTouchY;
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				v.performClick();
+
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					initialX = paramsF.x;
+					initialY = paramsF.y;
+					initialTouchX = event.getRawX();
+					initialTouchY = event.getRawY();
+				case MotionEvent.ACTION_UP:
+					break;
+				case MotionEvent.ACTION_MOVE:
+					paramsF.x = initialX
+							+ (int) (event.getRawX() - initialTouchX);
+					paramsF.y = initialY
+							+ (int) (event.getRawY() - initialTouchY);
+					windowManager.updateViewLayout(floatingSpeedText, paramsF);
+				}
+				return false;
+			}
+		});
+	}
+
+	private void setLongClickListener() {
+		floatingSpeedText
+				.setOnLongClickListener(new View.OnLongClickListener() {
+
+					@SuppressLint("NewApi")
+					@Override
+					public boolean onLongClick(View v) {
+						PopupMenu popup = new PopupMenu(v.getContext(), v);
+						MenuInflater inflater = popup.getMenuInflater();
+						inflater.inflate(R.menu.popup_menu, popup.getMenu());
+						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+								switch (item.getItemId()) {
+								case R.id.close_btn_item:
+									stopService(new Intent(
+											getApplicationContext(),
+											FloatingIconService.class));
+									break;
+
+								default:
+									break;
+								}
+								return false;
+							}
+						});
+						popup.show();
+
+						return true;
+					}
+				});
+	}
+
+	private WindowManager.LayoutParams setUpFloatingText() {
 		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 		final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 				WindowManager.LayoutParams.WRAP_CONTENT,
@@ -61,74 +142,7 @@ public class FloatingIconService extends Service implements LocationListener {
 		floatingSpeedText.setTextSize(80);
 
 		windowManager.addView(floatingSpeedText, params);
-
-		try {
-			floatingSpeedText
-					.setOnLongClickListener(new View.OnLongClickListener() {
-
-						@Override
-						public boolean onLongClick(View v) {
-							PopupMenu popup = new PopupMenu(v.getContext(), v);
-							MenuInflater inflater = popup.getMenuInflater();
-							inflater.inflate(R.menu.popup_menu, popup.getMenu());
-							popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-								@Override
-								public boolean onMenuItemClick(MenuItem item) {
-									switch (item.getItemId()) {
-									case R.id.close_btn_item:
-										stopService(new Intent(
-												getApplicationContext(),
-												FloatingIconService.class));
-										break;
-
-									default:
-										break;
-									}
-									return false;
-								}
-							});
-							popup.show();
-
-							return true;
-						}
-					});
-
-			floatingSpeedText.setOnTouchListener(new View.OnTouchListener() {
-				private WindowManager.LayoutParams paramsF = params;
-				private int initialX;
-				private int initialY;
-				private float initialTouchX;
-				private float initialTouchY;
-
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					v.performClick();
-
-					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-						initialX = paramsF.x;
-						initialY = paramsF.y;
-						initialTouchX = event.getRawX();
-						initialTouchY = event.getRawY();
-					case MotionEvent.ACTION_UP:
-						break;
-					case MotionEvent.ACTION_MOVE:
-						paramsF.x = initialX
-								+ (int) (event.getRawX() - initialTouchX);
-						paramsF.y = initialY
-								+ (int) (event.getRawY() - initialTouchY);
-						windowManager.updateViewLayout(floatingSpeedText,
-								paramsF);
-					}
-					return false;
-				}
-			});
-		} catch (Exception e) {
-			Log.e(TAG, "exceptioin in setting up floating image", e);
-		}
-		this.player = MediaPlayer.create(this, R.raw.alert);
-		this.player.setVolume(1.0f, 1.0f);
+		return params;
 	}
 
 	@Override
@@ -166,7 +180,8 @@ public class FloatingIconService extends Service implements LocationListener {
 
 		int limit = -1;
 		try {
-			limit = Integer.parseInt(MainActivity.limitSpinner.getSelectedItem().toString());
+			limit = Integer.parseInt(MainActivity.limitSpinner
+					.getSelectedItem().toString());
 		} catch (Exception e) {
 			Log.e(TAG, "wrong speed format");
 		}
@@ -176,8 +191,7 @@ public class FloatingIconService extends Service implements LocationListener {
 		if (speedInMiles > this.speedLimit && !player.isPlaying()) {
 			player.start();
 			Toast.makeText(getApplicationContext(),
-					String.valueOf(speedInMiles), Toast.LENGTH_SHORT)
-					.show();
+					String.valueOf(speedInMiles), Toast.LENGTH_SHORT).show();
 		}
 
 	}
