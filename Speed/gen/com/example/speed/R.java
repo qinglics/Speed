@@ -1645,7 +1645,7 @@ containing a value of this type.
         public static final int beginning=0x7f0a001b;
         public static final int bottom=0x7f0a001e;
         public static final int checkbox=0x7f0a002b;
-        public static final int close_btn_item=0x7f0a0046;
+        public static final int close_btn_item=0x7f0a0047;
         public static final int collapseActionView=0x7f0a0015;
         public static final int decor_content_parent=0x7f0a0031;
         public static final int default_activity_button=0x7f0a0026;
@@ -1664,6 +1664,7 @@ containing a value of this type.
         public static final int limitSpinner=0x7f0a0043;
         public static final int listMode=0x7f0a000a;
         public static final int list_item=0x7f0a0027;
+        public static final int locateCarButton=0x7f0a0046;
         public static final int mapAndSpeedButton=0x7f0a0045;
         public static final int middle=0x7f0a001d;
         public static final int never=0x7f0a0017;
@@ -1672,7 +1673,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0a0007;
         public static final int progress_horizontal=0x7f0a0008;
         public static final int radio=0x7f0a002d;
-        public static final int save_location_item=0x7f0a0047;
+        public static final int save_location_item=0x7f0a0048;
         public static final int search_badge=0x7f0a0037;
         public static final int search_bar=0x7f0a0036;
         public static final int search_button=0x7f0a0038;
@@ -1817,6 +1818,7 @@ containing a value of this type.
         public static final int app_name=0x7f0b000f;
         public static final int default_limit=0x7f0b0015;
         public static final int hello_world=0x7f0b0010;
+        public static final int locate_car_text=0x7f0b0018;
         public static final int map_speed_text=0x7f0b0012;
         public static final int speed_limit=0x7f0b0014;
         public static final int speed_only_text=0x7f0b0013;

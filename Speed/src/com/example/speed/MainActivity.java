@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,6 +28,21 @@ public class MainActivity extends Activity {
 		initLimitSpinner();
 		initSpeedOnlyButton();
 		initMapAndSpeedButton();
+		initLocateCarButton();
+	}
+	
+	private void initLocateCarButton() {
+		Button locateCarButton = (Button) findViewById(R.id.locateCarButton);
+		locateCarButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Position pos = new Database(getApplicationContext()).getLastLocation();
+				Log.i("get values: \t", String.valueOf(pos.x) + " " + String.valueOf(pos.y));
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("http://maps.google.com/maps?daddr=%f, %f", pos.y, pos.x)));
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void initMapAndSpeedButton() {

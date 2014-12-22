@@ -32,6 +32,7 @@ public class FloatingIconService extends Service implements LocationListener {
 	private TextView floatingSpeedText = null;
 	private MediaPlayer player = null;
 	private int speedLimit = 25;
+	private Position pos = new Position();
 
 	public LocationManager locationManager = null;
 
@@ -109,6 +110,15 @@ public class FloatingIconService extends Service implements LocationListener {
 											getApplicationContext(),
 											FloatingIconService.class));
 									break;
+								case R.id.save_location_item:
+									Database db = new Database(
+											getApplicationContext());
+									db.addLocation(pos.x, pos.y);
+									db.close();
+									stopService(new Intent(
+											getApplicationContext(),
+											FloatingIconService.class));
+									break;
 
 								default:
 									break;
@@ -171,6 +181,8 @@ public class FloatingIconService extends Service implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		float speed = location.getSpeed();
+		pos.x = location.getLongitude();
+		pos.y = location.getLatitude();
 		int speedInMiles = (int) (speed * 3600 / 1609.34 + 0.5);
 		if (this.floatingSpeedText != null) {
 			this.floatingSpeedText.setText(Html
