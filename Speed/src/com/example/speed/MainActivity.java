@@ -19,7 +19,7 @@ import android.widget.Spinner;
 public class MainActivity extends Activity {
 
 	public static Spinner limitSpinner = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,16 +30,20 @@ public class MainActivity extends Activity {
 		initMapAndSpeedButton();
 		initLocateCarButton();
 	}
-	
+
 	private void initLocateCarButton() {
 		Button locateCarButton = (Button) findViewById(R.id.locateCarButton);
 		locateCarButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Position pos = new Database(getApplicationContext()).getLastLocation();
-				Log.i("get values: \t", String.valueOf(pos.x) + " " + String.valueOf(pos.y));
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("http://maps.google.com/maps?daddr=%f, %f", pos.y, pos.x)));
+				Position pos = new Database(getApplicationContext())
+						.getLastLocation();
+				Log.i("get values: \t",
+						String.valueOf(pos.x) + " " + String.valueOf(pos.y));
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String
+						.format("http://maps.google.com/maps?daddr=%f, %f",
+								pos.y, pos.x)));
 				startActivity(intent);
 			}
 		});

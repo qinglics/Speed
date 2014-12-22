@@ -42,24 +42,28 @@ public class Database extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.i(TAG, "onUpgrade is called, do nothing");
 	}
-	
+
 	public void addLocation(double x, double y) {
 		String dateStamp = String.valueOf(new Date().getTime());
 		SQLiteDatabase db = this.getWritableDatabase();
-		Log.i(TAG, "values: " + dateStamp + " \t" + String.valueOf(x) + " \t" + String.valueOf(y));
+		Log.i(TAG, "values: " + dateStamp + " \t" + String.valueOf(x) + " \t"
+				+ String.valueOf(y));
 		ContentValues values = new ContentValues();
 		values.put(DATETIME, dateStamp);
 		values.put(LONGTI, String.valueOf(x));
 		values.put(LATI, String.valueOf(y));
 		db.insert(TABLE_NAME, null, values);
-		
+
 		this.cleanOldRecords(db);
 		db.close();
 	}
-	
+
 	public Position getLastLocation() {
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cur = db.query(TABLE_NAME, new String[] {DATETIME, LONGTI, LATI}, DATETIME + ">" + this.getLastWeekStamp(), null, null, null, DATETIME + " DESC");
+		Cursor cur = db.query(TABLE_NAME,
+				new String[] { DATETIME, LONGTI, LATI },
+				DATETIME + ">" + this.getLastWeekStamp(), null, null, null,
+				DATETIME + " DESC");
 		Position ret = new Position();
 		if (cur.moveToNext()) {
 			ret.x = Double.parseDouble(cur.getString(1));
@@ -67,22 +71,24 @@ public class Database extends SQLiteOpenHelper {
 		}
 		cur.close();
 		db.close();
-		
+
 		return ret;
 	}
-	
+
 	private void cleanOldRecords(SQLiteDatabase db) {
-		String selectCount = String.format("SELECT COUNT(*) FROM %s", TABLE_NAME);
+		String selectCount = String.format("SELECT COUNT(*) FROM %s",
+				TABLE_NAME);
 		Cursor cursor = db.rawQuery(selectCount, null);
 		if (cursor.moveToNext()) {
 			if (cursor.getLong(0) > 3000) {
-				db.delete(TABLE_NAME, DATETIME + "<" + this.getLastWeekStamp(), null);
+				db.delete(TABLE_NAME, DATETIME + "<" + this.getLastWeekStamp(),
+						null);
 			}
 		}
 		cursor.close();
 		db.close();
 	}
-	
+
 	private String getLastWeekStamp() {
 		long lastWeekStamp = new Date().getTime() - 7 * 24 * 3600;
 		return String.valueOf(new Date(lastWeekStamp).getTime());
