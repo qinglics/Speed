@@ -17,44 +17,58 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/speedLimitTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/speed_limit" />
-
-        <Spinner
-            android:id="@+id/limitSpinner"
-            android:layout_width="188dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <Button
-            android:id="@+id/speedOnlyButton"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="@string/speed_only_text"
-            android:textSize="20sp" />
+            android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/mapAndSpeedButton"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="@string/map_speed_text"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/speedLimitTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_limit"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/locateCarButton"
-            android:layout_width="300dp"
+            <Spinner
+                android:id="@+id/limitSpinner"
+                android:layout_width="188dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="@string/locate_car_text"
-            android:textSize="20sp" />
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/speedOnlyButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="@string/speed_only_text"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/mapAndSpeedButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="@string/map_speed_text"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/locateCarButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="@string/locate_car_text"
+                android:textSize="20sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
