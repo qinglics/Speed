@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">Speed</string>
-    <string name="hello_world">Welcome to Driving Speed App!</string>
+    <string name="hello_world">Welcome to Driving Speed!</string>
     <string name="action_settings">Settings</string>
     <string name="map_speed_text">Start Map and Speed</string>
     <string name="speed_only_text">Only Speed</string>
-    <string name="speed_limit">Config Speed Limit</string>
+    <string name="speed_limit">Speed Limit (Mile)</string>
     <string name="default_limit">speed limit</string>
     <string name="stop_app">Stop the App</string>
     <string name="stop_app_and_save_location">Save Parking Location, Stop App</string>
